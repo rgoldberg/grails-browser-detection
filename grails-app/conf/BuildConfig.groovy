@@ -14,6 +14,7 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
+        build "eu.bitwalker.useragentutils:1.12"
     }
 
 	plugins {
