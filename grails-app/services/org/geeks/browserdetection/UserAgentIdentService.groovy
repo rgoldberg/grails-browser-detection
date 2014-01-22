@@ -1,10 +1,10 @@
 package org.geeks.browserdetection
 
-import nl.bitwalker.useragentutils.UserAgent
-import nl.bitwalker.useragentutils.Browser
-import nl.bitwalker.useragentutils.OperatingSystem
-import nl.bitwalker.useragentutils.RenderingEngine
-import nl.bitwalker.useragentutils.BrowserType
+import eu.bitwalker.useragentutils.UserAgent
+import eu.bitwalker.useragentutils.Browser
+import eu.bitwalker.useragentutils.OperatingSystem
+import eu.bitwalker.useragentutils.RenderingEngine
+import eu.bitwalker.useragentutils.BrowserType
 import javax.transaction.NotSupportedException
 
 class UserAgentIdentService extends WebTierService {

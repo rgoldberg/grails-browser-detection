@@ -14,13 +14,14 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
+        build "eu.bitwalker.useragentutils:1.12"
     }
 
 	plugins {
-		build(":tomcat:$grailsVersion",
-				":release:2.2.0") {
-			export = false
-		}
-	}
+        build(":release:3.0.1") {
+            export = false
+        }
+        runtime ":tomcat:7.0.42"
+    }
 
 }
