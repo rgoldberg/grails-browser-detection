@@ -11,10 +11,11 @@ grails.project.dependency.resolution = {
 
 	repositories {
 		grailsCentral()
+        mavenRepo 'http://repository.opencastproject.org/nexus/content/repositories/public/'
     }
 
     dependencies {
-        build "eu.bitwalker.useragentutils:1.12"
+        compile 'bitwalker:UserAgentUtils:1.12'
     }
 
 	plugins {
