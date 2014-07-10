@@ -1,8 +1,5 @@
 package org.geeks.browserdetection
 
-import groovy.transform.TypeChecked
-
-@TypeChecked
 final class VersionHelper {
 
 	/**
@@ -14,12 +11,12 @@ final class VersionHelper {
 	static int compare(String v1, String v2){
 		checkArguments(v1, v2)
 
-		String[] v1parts = v1.split("\\.")
-        String[] v2parts = v2.split("\\.")
+		def v1parts = v1.split("\\.")
+		def v2parts = v2.split("\\.")
 
-		Integer length = Math.min(v1parts.size(), v2parts.size())
+		def length = Math.min(v1parts.size(), v2parts.size())
 
-        Integer compRes
+		int compRes
 		for(int i=0; i<length; i++){
 			compRes = v1parts[i].toInteger().compareTo(v2parts[i].toInteger())
 
@@ -30,8 +27,8 @@ final class VersionHelper {
 
 		// processing the case when rest contains only 0 because
 		// 1,0 equals to 1.0.0
-        Integer strMinLength = Math.min(v1.length(), v2.length())
-		String rest = v1.substring(strMinLength)
+		def strMinLength = Math.min(v1.length(), v2.length())
+		def rest = v1.substring(strMinLength)
 		if(!rest){
 			rest = v2.substring(strMinLength)
 		}
@@ -49,9 +46,9 @@ final class VersionHelper {
 	static boolean equals(String v1, String v2){
 		checkArguments(v1, v2)
 
-		Integer wildcardIndex1 = v1.indexOf("*")
-        Integer wildcardIndex2 = v2.indexOf("*")
-        Integer wildcardIndex = wildcardIndex1
+		def wildcardIndex1 = v1.indexOf("*")
+		def wildcardIndex2 = v2.indexOf("*")
+		def wildcardIndex = wildcardIndex1
 		if(wildcardIndex == -1 || (wildcardIndex2 != -1 && wildcardIndex > wildcardIndex2)){
 			wildcardIndex = wildcardIndex2
 		}
