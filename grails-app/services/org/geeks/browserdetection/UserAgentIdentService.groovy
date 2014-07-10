@@ -5,7 +5,6 @@ import eu.bitwalker.useragentutils.Browser
 import eu.bitwalker.useragentutils.OperatingSystem
 import eu.bitwalker.useragentutils.RenderingEngine
 import eu.bitwalker.useragentutils.BrowserType
-import javax.transaction.NotSupportedException
 
 class UserAgentIdentService extends WebTierService {
 
@@ -272,12 +271,12 @@ class UserAgentIdentService extends WebTierService {
 	 */
 	@Deprecated
 	String getSecurity() {
-		throw new NotSupportedException()
+		throw new UnsupportedOperationException()
 	}
 
 	@Deprecated
 	String getLanguage() {
-		throw new NotSupportedException()
+		throw new UnsupportedOperationException()
 	}
 
 	@Deprecated
