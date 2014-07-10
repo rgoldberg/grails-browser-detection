@@ -5,9 +5,14 @@ import eu.bitwalker.useragentutils.Browser
 import eu.bitwalker.useragentutils.OperatingSystem
 import eu.bitwalker.useragentutils.RenderingEngine
 import eu.bitwalker.useragentutils.BrowserType
-import javax.transaction.NotSupportedException
+import eu.bitwalker.useragentutils.Version
+import org.codehaus.groovy.grails.web.util.WebUtils
 
-class UserAgentIdentService extends WebTierService {
+import javax.servlet.http.HttpServletRequest
+
+class UserAgentIdentService {
+
+    static transactional = false
 
 	final static String CHROME = "chrome"
     final static String FIREFOX = "firefox"
@@ -29,62 +34,38 @@ class UserAgentIdentService extends WebTierService {
     final static int CLIENT_SEAMONKEY = 7
     final static int CLIENT_OPERA = 8
 
-	final static String AGENT_INFO_TOKEN = "${this.name}_agentInfo"
-
 	final static def MOBILE_BROWSERS = [OperatingSystem.iOS4_IPHONE, OperatingSystem.iOS5_IPHONE, OperatingSystem.MAC_OS_X_IPAD,
 			OperatingSystem.MAC_OS_X_IPHONE, OperatingSystem.MAC_OS_X_IPOD, OperatingSystem.BADA, OperatingSystem.PSP]
 	final static def MOBILE_BROWSER_GROUPS = [OperatingSystem.ANDROID, OperatingSystem.BLACKBERRY, OperatingSystem.KINDLE, OperatingSystem.SYMBIAN]
+    public static final String USER_AGENT_REQUEST_ATTRIBUTE = "User-Agent"
 
-	boolean transactional = false
+    HttpServletRequest getRequest(){
+        WebUtils.retrieveGrailsWebRequest().currentRequest
+    }
 
 	/**
 	 * Returns user-agent header value from thread-bound RequestContextHolder
 	 */
 	String getUserAgentString() {
-		getUserAgentString(getRequest())
+        request.getHeader(USER_AGENT_REQUEST_ATTRIBUTE) ?: ""
 	}
 
 	/**
 	 * Returns user-agent header value from the passed request
 	 */
-	String getUserAgentString(def request) {
-		request.getHeader("user-agent")
+    @Deprecated
+	String getUserAgentString(HttpServletRequest request) {
+		request.getHeader(USER_AGENT_REQUEST_ATTRIBUTE)
 	}
 
-	private def getUserAgent() {
-
-		def userAgentString = getUserAgentString()
-		def userAgent = request.session.getAttribute(AGENT_INFO_TOKEN)
-
-		// returns cached instance
-		if (userAgent != null && userAgent.userAgentString == userAgentString) {
-			return userAgent
-		}
-
-		if (userAgent != null && userAgent.userAgentString != userAgent) {
-			log.warn "User agent string has changed in a single session!"
-			log.warn "Previous User Agent: ${userAgent.userAgentString}"
-			log.warn "New User Agent: ${userAgentString}"
-			log.warn "Discarding existing agent info and creating new..."
-		} else {
-			log.debug "User agent info does not exist in session scope, creating..."
-		}
-
-		// fallback for users without user-agent header
-		if(userAgentString == null){
-			log.warn "User agent header is not set"
-
-			userAgentString = ""
-		}
-
-		userAgent = parseUserAgent(userAgentString)
-
-		getRequest().session.setAttribute(AGENT_INFO_TOKEN, userAgent)
-		return userAgent
-	}
-
-	private def parseUserAgent(String userAgentString){
-		UserAgent.parseUserAgentString(userAgentString)
+	private UserAgent getUserAgent() {
+        // Avoid parsing the user-agent multiple times during the same request
+        UserAgent userAgent = request.getAttribute('user') as UserAgent
+        if(!userAgent) {
+            userAgent = UserAgent.parseUserAgentString(userAgentString)
+            request.setAttribute('userAgent', userAgent)
+        }
+        userAgent
 	}
 
 	boolean isChrome(ComparisonType comparisonType = null, String version = null) {
@@ -117,8 +98,9 @@ class UserAgentIdentService extends WebTierService {
 
 	private boolean isBrowser(Browser browserForChecking, ComparisonType comparisonType = null,
 	                          String version = null){
-		def userAgent = getUserAgent()
-		def browser = userAgent.browser
+		UserAgent userAgent = userAgent
+		Browser browser = userAgent.browser
+        Version browserVersion = userAgent.browserVersion
 
 		// browser checking
 		if(!(browser.group == browserForChecking || browser == browserForChecking)){
@@ -132,10 +114,10 @@ class UserAgentIdentService extends WebTierService {
 			}
 
 			if(comparisonType == ComparisonType.EQUAL){
-				return VersionHelper.equals(userAgent.browserVersion.version, version)
+				return VersionHelper.equals(browserVersion.version, version)
 			}
 
-			def compRes = VersionHelper.compare(userAgent.browserVersion.version, version)
+			def compRes = VersionHelper.compare(browserVersion.version, version)
 
 			if(compRes == 1 && comparisonType == ComparisonType.GREATER){
 				return true
@@ -148,17 +130,17 @@ class UserAgentIdentService extends WebTierService {
 			return false
 		}
 
-		true
+        return true
 	}
 
 	private boolean isOs(OperatingSystem osForChecking){
-		def os = getUserAgent().operatingSystem
+		OperatingSystem os = userAgent.operatingSystem
 
 		os.group == osForChecking || os == osForChecking
 	}
 
 	boolean isiPhone() {
-		def os = getUserAgent().operatingSystem
+        OperatingSystem os = userAgent.operatingSystem
 
 		os == OperatingSystem.iOS4_IPHONE || os == OperatingSystem.MAC_OS_X_IPHONE
 	}
@@ -192,11 +174,11 @@ class UserAgentIdentService extends WebTierService {
 	}
 
 	boolean isWebkit() {
-		getUserAgent().browser.renderingEngine == RenderingEngine.WEBKIT
+		userAgent.browser.renderingEngine == RenderingEngine.WEBKIT
 	}
 
 	boolean isWindowsMobile() {
-		def os = getUserAgent().operatingSystem
+		def os = userAgent.operatingSystem
 
 		os == OperatingSystem.WINDOWS_MOBILE || os == OperatingSystem.WINDOWS_MOBILE7
 	}
@@ -213,8 +195,8 @@ class UserAgentIdentService extends WebTierService {
 	 * Returns true if client is a mobile phone or any Android device, iPhone, iPad, iPod, PSP, Blackberry, Bada device
 	 */
 	boolean isMobile() {
-		def userAgent = getUserAgent()
-		def os = userAgent.operatingSystem
+		UserAgent userAgent = userAgent
+		OperatingSystem os = userAgent.operatingSystem
 
 		userAgent.browser.browserType == BrowserType.MOBILE_BROWSER || os in MOBILE_BROWSERS ||
 				(os.group && os.group in MOBILE_BROWSER_GROUPS)
@@ -224,7 +206,7 @@ class UserAgentIdentService extends WebTierService {
 	 * Returns the browser name.
 	 */
 	String getBrowser(){
-		getUserAgent().browser.name
+        userAgent.browser.name
 	}
 
 	/**
@@ -255,34 +237,21 @@ class UserAgentIdentService extends WebTierService {
 	}
 
 	String getBrowserVersion() {
-		getUserAgent().browserVersion.version
+        userAgent.browserVersion?.version
 	}
 
 	String getOperatingSystem() {
-		getUserAgent().operatingSystem.name
+        userAgent.operatingSystem?.name
 	}
 
 	@Deprecated
 	String getPlatform() {
-		getUserAgent().operatingSystem
-	}
-
-	/**
-	 * Internet Explorer specific.
-	 */
-	@Deprecated
-	String getSecurity() {
-		throw new NotSupportedException()
-	}
-
-	@Deprecated
-	String getLanguage() {
-		throw new NotSupportedException()
+        userAgent.operatingSystem
 	}
 
 	@Deprecated
 	int getBrowserType() {
-		def browser = getUserAgent().browser
+		Browser browser = userAgent.browser
 		browser = browser.group ? browser.group : browser
 
 		switch (browser){
@@ -300,7 +269,7 @@ class UserAgentIdentService extends WebTierService {
 				return CLIENT_OPERA;
 		}
 
-		if(getUserAgent().operatingSystem == OperatingSystem.BLACKBERRY){
+		if(userAgent.operatingSystem == OperatingSystem.BLACKBERRY){
 			return CLIENT_BLACKBERRY
 		}
 
@@ -312,7 +281,7 @@ class UserAgentIdentService extends WebTierService {
 	 */
 	@Deprecated
 	def getUserAgentInfo() {
-		def userAgent = getUserAgent()
+        UserAgent userAgent = userAgent
 
 		[
 			browserType: getBrowserType(),

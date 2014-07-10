@@ -26,7 +26,7 @@ class BrowserTagLib {
 
 	private static def CHOICE_STACK_NAME = "${this.name}_choiceStack"
 
-    def userAgentIdentService
+    UserAgentIdentService userAgentIdentService
 
 	def isMobile = { attrs, body ->
         handle body, { userAgentIdentService.isMobile() }
@@ -220,8 +220,8 @@ class BrowserTagLib {
 	 * @param condition a closure that returns true of false
 	 * @return true if
 	 */
-	private boolean handle(body, condition){
-		def stack = getStack()
+	private boolean handle(body, Closure condition){
+        Stack<HierarchyLevelHolder> stack = stack
 		def parent = (!stack.empty()) ? stack.peek() : null
 
 		// skip if successful condition is met in choice tag
@@ -231,7 +231,7 @@ class BrowserTagLib {
 		}
 
 		if(condition()){
-			def conditionTagHolder = new HierarchyLevelHolder()
+            HierarchyLevelHolder conditionTagHolder = new HierarchyLevelHolder()
 			conditionTagHolder.levelType = HierarchyLevelType.ConditionTag
 			stack.push(conditionTagHolder)
 
@@ -251,13 +251,13 @@ class BrowserTagLib {
 	}
 
 	def choice = { attrs, body ->
-		def stack = getStack()
+        Stack<HierarchyLevelHolder> stack = stack
 
 		if (!stack.empty() && stack.peek().levelType == HierarchyLevelType.ChoiceTag) {
 			throw new IllegalStateException("choice tag can't be putted under other choice tag")
 		}
 
-		def choiceTagHolder = new HierarchyLevelHolder()
+        HierarchyLevelHolder choiceTagHolder = new HierarchyLevelHolder()
 		choiceTagHolder.levelType = HierarchyLevelType.ChoiceTag
 		stack.push(choiceTagHolder)
 
