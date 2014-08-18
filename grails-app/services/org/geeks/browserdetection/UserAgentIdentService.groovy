@@ -196,8 +196,7 @@ class UserAgentIdentService extends WebTierService {
 
 	boolean isWindowsMobile() {
 		def os = getUserAgent().operatingSystem
-
-		os == OperatingSystem.WINDOWS_MOBILE || os == OperatingSystem.WINDOWS_MOBILE7
+		os in [ OperatingSystem.WINDOWS_MOBILE, OperatingSystem.WINDOWS_MOBILE7, OperatingSystem.WINDOWS_PHONE8, OperatingSystem.WINDOWS_PHONE8_1 ]
 	}
 
 	boolean isBlackberry() {
