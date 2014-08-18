@@ -12,11 +12,11 @@ grails.project.dependency.resolution = {
 
 	repositories {
 		grailsCentral()
-        mavenRepo 'http://repository.opencastproject.org/nexus/content/repositories/public/'
+        mavenRepo 'https://raw.githubusercontent.com/HaraldWalker/user-agent-utils/mvn-repo/'
     }
 
     dependencies {
-        compile 'bitwalker:UserAgentUtils:1.12'
+        compile 'bitwalker:UserAgentUtils:1.13'
     }
 
 	plugins {
@@ -24,7 +24,7 @@ grails.project.dependency.resolution = {
                 ":rest-client-builder:2.0.1") {
             export = false
         }
-        runtime (":tomcat:7.0.52.1") {
+        runtime (":tomcat:7.0.54") {
             export = false
         }
     }
