@@ -131,10 +131,10 @@ class UserAgentIdentService extends WebTierService {
 			}
 
 			if(comparisonType == ComparisonType.EQUAL){
-				return VersionHelper.equals(userAgent.browserVersion.version, version)
+				return VersionHelper.equals(userAgent.browserVersion?.version, version)
 			}
 
-			def compRes = VersionHelper.compare(userAgent.browserVersion.version, version)
+			def compRes = VersionHelper.compare(userAgent.browserVersion?.version, version)
 
 			if(compRes == 1 && comparisonType == ComparisonType.GREATER){
 				return true
@@ -253,11 +253,11 @@ class UserAgentIdentService extends WebTierService {
 	}
 
 	String getBrowserVersion() {
-		getUserAgent().browserVersion.version
+		getUserAgent()?.browserVersion?.version
 	}
 
 	String getOperatingSystem() {
-		getUserAgent().operatingSystem.name
+		getUserAgent()?.operatingSystem?.name
 	}
 
 	@Deprecated
@@ -314,8 +314,8 @@ class UserAgentIdentService extends WebTierService {
 
 		[
 			browserType: getBrowserType(),
-			browserVersion: userAgent.browserVersion.version,
-			operatingSystem: userAgent.operatingSystem.name,
+			browserVersion: userAgent.browserVersion?.version,
+			operatingSystem: userAgent.operatingSystem?.name,
 			platform: "",
 			security: "",
 			language: "",

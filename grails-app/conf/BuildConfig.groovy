@@ -1,32 +1,33 @@
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
-grails.project.test.reports.dir	= "target/test-reports"
+grails.project.test.reports.dir = "target/test-reports"
+
+grails.project.fork = [
+    test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
+    run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
+    war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
+    console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256]
+]
 
 grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
-
     inherits("global") {
     }
-
-	log "warn"
-
-	repositories {
-		grailsCentral()
+    log "warn"
+    repositories {
+        grailsCentral()
+        mavenLocal()
+        mavenCentral()
         mavenRepo 'https://raw.githubusercontent.com/HaraldWalker/user-agent-utils/mvn-repo/'
     }
-
     dependencies {
-        compile 'bitwalker:UserAgentUtils:1.13'
+        compile 'bitwalker:UserAgentUtils:1.14'
     }
 
-	plugins {
+    plugins {
         build(":release:3.0.1",
-                ":rest-client-builder:2.0.1") {
-            export = false
-        }
-        runtime (":tomcat:7.0.54") {
+              ":rest-client-builder:2.0.3") {
             export = false
         }
     }
-
 }
