@@ -21,7 +21,7 @@ grails.project.dependency.resolution = {
         mavenRepo 'https://raw.githubusercontent.com/HaraldWalker/user-agent-utils/mvn-repo/'
     }
     dependencies {
-        compile 'bitwalker:UserAgentUtils:1.14'
+        compile 'eu.bitwalker:UserAgentUtils:1.14'
     }
 
     plugins {
