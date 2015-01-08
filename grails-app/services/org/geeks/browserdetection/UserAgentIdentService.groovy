@@ -159,11 +159,12 @@ class UserAgentIdentService extends WebTierService {
 	boolean isiPhone() {
 		def os = getUserAgent().operatingSystem
 
-		os == OperatingSystem.iOS4_IPHONE || os == OperatingSystem.MAC_OS_X_IPHONE
+		os in [ OperatingSystem.MAC_OS_X_IPHONE, OperatingSystem.iOS4_IPHONE, OperatingSystem.iOS5_IPHONE, OperatingSystem.iOS6_IPHONE, OperatingSystem.iOS7_IPHONE, OperatingSystem.iOS8_IPHONE, OperatingSystem.iOS8_1_IPHONE ]
 	}
 
 	boolean isiPad() {
-		isOs(OperatingSystem.MAC_OS_X_IPAD)
+		def os = getUserAgent().operatingSystem
+		os in [ OperatingSystem.MAC_OS_X_IPAD, OperatingSystem.iOS6_IPAD, OperatingSystem.iOS7_IPAD, OperatingSystem.iOS8_IPAD, OperatingSystem.iOS8_1_IPAD ]
 	}
 
 	boolean isiOsDevice() {
@@ -215,7 +216,7 @@ class UserAgentIdentService extends WebTierService {
 		def os = userAgent.operatingSystem
 
 		userAgent.browser.browserType == BrowserType.MOBILE_BROWSER || os in MOBILE_BROWSERS ||
-				(os.group && os.group in MOBILE_BROWSER_GROUPS)
+				(os.group && os.group in MOBILE_BROWSER_GROUPS) || isiOsDevice()
 	}
 
 	/**
