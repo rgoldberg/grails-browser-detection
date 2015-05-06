@@ -5,6 +5,7 @@ import eu.bitwalker.useragentutils.Browser
 import eu.bitwalker.useragentutils.OperatingSystem
 import eu.bitwalker.useragentutils.RenderingEngine
 import eu.bitwalker.useragentutils.BrowserType
+import eu.bitwalker.useragentutils.DeviceType
 
 class UserAgentIdentService extends WebTierService {
 
@@ -173,6 +174,14 @@ class UserAgentIdentService extends WebTierService {
 
 	boolean isAndroid() {
 		isOs(OperatingSystem.ANDROID)
+	}
+
+	boolean isAndroidTablet() {
+		isOs(OperatingSystem.ANDROID) && getUserAgent().operatingSystem.deviceType == DeviceType.TABLET
+	}
+
+	boolean isTablet() {
+		getUserAgent().operatingSystem.deviceType == DeviceType.TABLET
 	}
 
 	boolean isPalm() {
