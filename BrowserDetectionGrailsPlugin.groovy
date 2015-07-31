@@ -1,5 +1,5 @@
 class BrowserDetectionGrailsPlugin {
-    def version = '2.3.0'
+    def version = '2.4.0'
     def grailsVersion = "2.3 > *"
     def title = "Browser Detection Plugin"
     def author = "Gennady Tsarik, Mathias Fonseca"
@@ -42,5 +42,5 @@ This plugin helps you detect browsers, versions, language and operating systems 
     def onShutdown = { event ->
         // TODO Implement code that is executed when the application shuts down (optional)
     }
-    
+
 }

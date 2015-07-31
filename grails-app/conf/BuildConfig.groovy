@@ -18,10 +18,10 @@ grails.project.dependency.resolution = {
         grailsCentral()
         mavenLocal()
         mavenCentral()
-        mavenRepo 'https://raw.githubusercontent.com/HaraldWalker/user-agent-utils/mvn-repo/'
+        mavenRepo 'https://oss.sonatype.org/content/repositories/public'
     }
     dependencies {
-        compile 'eu.bitwalker:UserAgentUtils:1.15'
+        compile 'eu.bitwalker:UserAgentUtils:1.17-SNAPSHOT'
     }
 
     plugins {
