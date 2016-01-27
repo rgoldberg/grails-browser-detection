@@ -1,9 +1,7 @@
+.gradle
 .idea
-target
+build
 work
-
-plugin.xml
-
 *.log
 
 #MacOS specific
@@ -13,5 +11,3 @@ plugin.xml
 *.iml
 *.ipr
 *.iws
-
-*.zip
