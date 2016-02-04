@@ -336,7 +336,7 @@ class UserAgentIdentService {
 		RequestContextHolder.currentRequestAttributes().session
 	}
 
-	private DeviceType isDeviceType(DeviceType type) {
+	private boolean isDeviceType(DeviceType type) {
 		userAgent.operatingSystem.deviceType == type
 	}
 }
