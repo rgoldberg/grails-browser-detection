@@ -242,6 +242,10 @@ class UserAgentIdentService {
 				(os.group && os.group in MOBILE_BROWSER_GROUPS) || isiOsDevice()
 	}
 
+	boolean isRobot() {
+		userAgent.browserType == BrowserType.ROBOT
+	}
+
 	/**
 	 * Returns the browser name.
 	 */
