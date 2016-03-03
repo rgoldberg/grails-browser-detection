@@ -243,7 +243,7 @@ class UserAgentIdentService {
 	}
 
 	boolean isRobot() {
-		userAgent.browserType == BrowserType.ROBOT
+		userAgent.browser.browserType == BrowserType.ROBOT
 	}
 
 	/**
