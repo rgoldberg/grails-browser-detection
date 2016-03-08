@@ -176,11 +176,32 @@ class UserAgentIdentService {
 	}
 
 	boolean isiPhone() {
-		userAgent.operatingSystem in IOS
+		def os = getUserAgent().operatingSystem
+
+		os in [ OperatingSystem.MAC_OS_X_IPHONE,
+				OperatingSystem.iOS4_IPHONE,
+				OperatingSystem.iOS5_IPHONE,
+				OperatingSystem.iOS6_IPHONE,
+				OperatingSystem.iOS7_IPHONE,
+				OperatingSystem.iOS8_IPHONE,
+				OperatingSystem.iOS8_1_IPHONE,
+				OperatingSystem.iOS8_2_IPHONE,
+				OperatingSystem.iOS8_3_IPHONE,
+				OperatingSystem.iOS8_4_IPHONE,
+				OperatingSystem.iOS9_IPHONE ]
 	}
 
 	boolean isiPad() {
-		userAgent.operatingSystem in IPAD
+		def os = getUserAgent().operatingSystem
+		os in [ OperatingSystem.MAC_OS_X_IPAD,
+				OperatingSystem.iOS6_IPAD,
+				OperatingSystem.iOS7_IPAD,
+				OperatingSystem.iOS8_IPAD,
+				OperatingSystem.iOS8_1_IPAD,
+				OperatingSystem.iOS8_2_IPAD,
+				OperatingSystem.iOS8_3_IPAD,
+				OperatingSystem.iOS8_4_IPAD,
+				OperatingSystem.iOS9_IPAD ]
 	}
 
 	boolean isiOsDevice() {
@@ -220,7 +241,8 @@ class UserAgentIdentService {
 	}
 
 	boolean isWindowsMobile() {
-		userAgent.operatingSystem in WINDOWS_MOBILE
+		def os = getUserAgent().operatingSystem
+		os in [ OperatingSystem.WINDOWS_MOBILE, OperatingSystem.WINDOWS_MOBILE7, OperatingSystem.WINDOWS_PHONE8, OperatingSystem.WINDOWS_PHONE8_1, OperatingSystem.WINDOWS_10_MOBILE ]
 	}
 
 	boolean isBlackberry() {
