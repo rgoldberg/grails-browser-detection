@@ -150,21 +150,25 @@ class UserAgentIdentService {
 				throw new IllegalArgumentException("comparisonType must be specified")
 			}
 
-			if (comparisonType == ComparisonType.EQUAL) {
-				return VersionHelper.equals(userAgent.browserVersion?.version, version)
-			}
+            if (userAgent.browserVersion?.version) {
 
-			int compRes = VersionHelper.compare(userAgent.browserVersion?.version, version)
+                if (comparisonType == ComparisonType.EQUAL) {
+                    return VersionHelper.equals(userAgent.browserVersion?.version, version)
+                }
 
-			if (compRes == 1 && comparisonType == ComparisonType.GREATER) {
-				return true
-			}
+                int compRes = VersionHelper.compare(userAgent.browserVersion?.version, version)
 
-			if (compRes == -1 && comparisonType == ComparisonType.LOWER) {
-				return true
-			}
+                if (compRes == 1 && comparisonType == ComparisonType.GREATER) {
+                    return true
+                }
 
-			return false
+                if (compRes == -1 && comparisonType == ComparisonType.LOWER) {
+                    return true
+    			}
+
+            }
+
+            return false
 		}
 
 		true

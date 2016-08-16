@@ -16,7 +16,7 @@ plugins {
 	id 'com.jfrog.bintray' version '1.2'
 }
 
-version '3.2.0'
+version '3.3.0'
 group 'org.grails.plugins'
 
 apply plugin: 'maven-publish'
@@ -52,7 +52,7 @@ dependencies {
 	provided 'org.grails:grails-dependencies'
 	provided 'org.grails:grails-web-boot'
 
-	compile 'eu.bitwalker:UserAgentUtils:1.19'
+	compile 'eu.bitwalker:UserAgentUtils:1.20'
 
 	console 'org.grails:grails-console'
 
