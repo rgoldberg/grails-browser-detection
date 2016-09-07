@@ -60,6 +60,7 @@ You can use the following structure that emulates switch behavior:
 
 ```gsp
 <browser:choice>
+	<browser:isChrome></browser:isChrome>
 	<browser:isIE6></browser:isIE6>
 	<browser:isIE7></browser:isIE7>
 	<browser:otherwise></browser:otherwise>
@@ -82,3 +83,19 @@ Or the one below:
 ```
 
 At the moment, wildcards are allowed only for version attribute. Be aware that 5.1 is greater than 5 and 5.0 equals to 5.
+
+All of these taglibs have their negative assert by starting with `isNot`. For example:
+```gsp
+<browser:isNotSafari>
+	This text is rendered if the browser IS NOT Safari.
+</browser:isNotSafari>
+<browser:isNotFirefox>
+	This text is rendered if the browser IS NOT Firefox.
+</browser:isNotFirefox>
+<browser:isNotMsie>
+	This text is rendered if the browser IS NOT Internet Explorer.
+</browser:isNotMsie>
+<browser:isNotChrome>
+	This text is rendered if the browser IS NOT Chrome.
+</browser:isNotChrome>
+```
