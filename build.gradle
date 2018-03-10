@@ -52,7 +52,7 @@ dependencies {
 	provided 'org.grails:grails-dependencies'
 	provided 'org.grails:grails-web-boot'
 
-	compile 'eu.bitwalker:UserAgentUtils:1.20'
+	compile 'eu.bitwalker:UserAgentUtils:1.21'
 
 	console 'org.grails:grails-console'
 
