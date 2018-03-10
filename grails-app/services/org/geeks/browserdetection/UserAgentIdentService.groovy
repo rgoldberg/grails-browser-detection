@@ -71,7 +71,7 @@ class UserAgentIdentService {
 		request.getHeader("user-agent")
 	}
 
-	private UserAgent getUserAgent() {
+	UserAgent getUserAgent() {
 
 		String userAgentString = getUserAgentString()
 		UserAgent userAgent = request.session.getAttribute(AGENT_INFO_TOKEN)
@@ -103,7 +103,7 @@ class UserAgentIdentService {
 		return userAgent
 	}
 
-	private UserAgent parseUserAgent(String userAgentString) {
+	UserAgent parseUserAgent(String userAgentString) {
 		UserAgent.parseUserAgentString(userAgentString)
 	}
 
